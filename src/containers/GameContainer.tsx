@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled from '../styles/styled';
 import TeamForm from '../components/TeamForm';
+import Text from '../components/Text';
 
 // interface GameContainerProps {
 //     theme: Theme;
@@ -18,6 +19,7 @@ const GameContainer: React.FC = props => {
         <StyledGameContainer>
             <TeamForm />
             {/* <Leaderboards /> */}
+            <Text>Want to be top? STFU and click!</Text>
         </StyledGameContainer>
     );
 };
