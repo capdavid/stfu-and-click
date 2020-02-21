@@ -25,7 +25,7 @@ export const colors = {
     lighterGrey: '#f2f2f2',
     lightBlue: '#dce9f8',
     lighterBlue: '#ecf3fd',
-    darkBlue: '417ec1'
+    darkBlue: '#4180cb'
 };
 
 export const theme: Theme = {
