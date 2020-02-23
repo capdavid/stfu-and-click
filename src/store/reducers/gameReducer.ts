@@ -1,17 +1,20 @@
 import { combineReducers } from 'redux';
 import { createReducer } from 'typesafe-actions';
+import { LeaderboardItem } from 'MyTypes';
 
-import { registerClick } from '../actions/gameActions';
-
-type LeaderboardItem = {
-    order: number;
-    team: string;
-    clicks: number;
-};
+import { registerClick, fetchLeaderboardAsync } from '../actions/gameActions';
 
 const gameReducer = combineReducers({
-    clicksCounter: createReducer(0 as number).handleAction(registerClick, (state, _) => state + 1),
-    leaderboard: createReducer([
+    clicksCounter: createReducer(0 as number).handleAction(registerClick, (state, action) => {
+        return state + 1;
+    }),
+    isLoading: createReducer(false as boolean)
+        .handleAction([fetchLeaderboardAsync.request], (state, action) => true)
+        .handleAction([fetchLeaderboardAsync.success, fetchLeaderboardAsync.failure], (state, action) => {
+            console.log('changing loading');
+            return false;
+        }),
+    leaderboardData: createReducer([
         {
             order: 1,
             team: 'Best_Team_Ever',
@@ -27,7 +30,10 @@ const gameReducer = combineReducers({
             team: 'tet645',
             clicks: 1
         }
-    ] as LeaderboardItem[])
+    ] as LeaderboardItem[]).handleAction(fetchLeaderboardAsync.success, (state, action) => {
+        console.log(action);
+        return action.payload.data;
+    })
 });
 
 export default gameReducer;

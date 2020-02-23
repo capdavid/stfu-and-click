@@ -30,6 +30,7 @@ const StyledOrderCell = styled.div`
 const StyledTeamCell = styled.div`
     flex: 5;
     text-align: left;
+    overflow: hidden;
 `;
 const StyledClicksCell = styled.div`
     flex: 2;
