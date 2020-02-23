@@ -1,19 +1,23 @@
 import React from 'react';
 import { ThemeProvider } from 'emotion-theming';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 import { theme } from './styles/theme';
-import Header from './components/Header';
-import Quote from './components/Quote';
+
+import ActiveGame from './containers/ActiveGame';
 import Footer from './components/Footer';
-import GameContainer from './containers/GameContainer';
+import GameMenu from './containers/GameMenu';
+import Header from './components/Header';
 
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Header>STFUANDCLICK.COM</Header>
-            <Quote author="anonymous">It's really simple, you just need to click as fast as you can.</Quote>
-            <GameContainer />
-            <Footer />
+            <BrowserRouter>
+                <Header>STFUANDCLICK.COM</Header>
+                <Route path="/" exact component={GameMenu} />
+                <Route path="/:teamName" component={ActiveGame} />
+                <Footer />
+            </BrowserRouter>
         </ThemeProvider>
     );
 };
