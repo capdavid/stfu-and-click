@@ -5,7 +5,7 @@ interface TextProps {
 }
 
 const Text = styled.p<TextProps>`
-    padding: 1rem;
+    padding: ${props => (props.left ? '0' : '1rem')};
     text-align: ${props => (props.left ? 'left' : 'center')};
     margin: 0;
     font-style: italic;
