@@ -18,7 +18,6 @@ const GameMenu: React.FC<RouteComponentProps> = props => {
     });
 
     const trimmedLeaderboardData = leaderboardData.slice(0, 10);
-    console.log(trimmedLeaderboardData);
 
     const onFetchLeaderboard = () => dispatch(actions.fetchLeaderboardAsync.request());
 
@@ -26,6 +25,8 @@ const GameMenu: React.FC<RouteComponentProps> = props => {
         onFetchLeaderboard();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    //TODO Add input validation (only letters, numbers, spaces, no longer than XX chars) + show error message
 
     const teamNameInputRef = useRef<HTMLInputElement>(null);
 

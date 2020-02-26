@@ -10,16 +10,16 @@ import GameMenu from './containers/GameMenu';
 import Header from './components/Header';
 
 const App: React.FC = () => {
-    return (
-        <ThemeProvider theme={theme}>
-            <BrowserRouter>
-                <Header>STFUANDCLICK.COM</Header>
-                <Route path="/" exact component={GameMenu} />
-                <Route path="/:teamName" component={ActiveGame} />
-                <Footer />
-            </BrowserRouter>
-        </ThemeProvider>
-    );
+  return (
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Header>STFUANDCLICK.COM</Header>
+        <Route path="/" exact component={GameMenu} />
+        <Route path="/:teamName" component={ActiveGame} />
+        <Footer />
+      </BrowserRouter>
+    </ThemeProvider>
+  );
 };
 
 export default App;
