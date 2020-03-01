@@ -1,56 +1,63 @@
 import React from 'react';
 import styled from '../styles/styled';
 
-interface LeaderboardsProps {
-    leaderboard: any;
+import { LeaderboardItem } from 'MyTypes';
+import LeaderboardRow from './LeaderboardRow';
+import withErrorAndLoading from '../hoc/withErrorAndLoading';
+
+interface LeaderboardWrapperProps {
+  teamName?: string;
+  trimmed?: boolean;
+}
+
+interface LeaderboardsProps extends LeaderboardWrapperProps {
+  leaderboard: LeaderboardItem[];
 }
 
 const StyledLeaderboards = styled.div<LeaderboardsProps>`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin: 0 auto;
-    font-weight: bold;
-`;
-
-const StyledLeaderboardItem = styled.div`
-    display: flex;
-    justify-content: center;
-    background: ${p => p.theme.colors.lightBlue};
-    &:nth-of-type(even) {
-        background: ${p => p.theme.colors.lighterBlue};
-    }
-    padding: 0.5rem 0;
-`;
-
-const StyledOrderCell = styled.div`
-    flex: 1;
-    text-align: center;
-`;
-const StyledTeamCell = styled.div`
-    flex: 5;
-    text-align: left;
-    overflow: hidden;
-`;
-const StyledClicksCell = styled.div`
-    flex: 2;
-    text-align: right;
-    margin: 0 1rem 0 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: ${p => (p.trimmed ? 'inherit' : '16.7rem')};
+  overflow: hidden;
+  margin: 0 auto;
+  font-weight: bold;
 `;
 
 const Leaderboards: React.FC<LeaderboardsProps> = props => {
-    console.log(props.leaderboard);
-    return (
-        <StyledLeaderboards {...props}>
-            {props.leaderboard.map((el: any) => (
-                <StyledLeaderboardItem key={el.order}>
-                    <StyledOrderCell>{el.order}</StyledOrderCell>
-                    <StyledTeamCell>{el.team}</StyledTeamCell>
-                    <StyledClicksCell>{el.clicks}</StyledClicksCell>
-                </StyledLeaderboardItem>
-            ))}
-        </StyledLeaderboards>
-    );
-};
+  const { leaderboard } = props;
+  console.log('Leaderboards rendering');
+  console.log(leaderboard);
+  const teamPosition = leaderboard.findIndex(el => el.team === props.teamName);
+  const posOffset = () => {
+    const leaderboardLength = leaderboard.length;
+    let pos;
+    pos = teamPosition - 3;
+    if (teamPosition <= 3) {
+      pos = 0;
+    } else if (leaderboardLength - teamPosition <= 3) {
+      pos = leaderboardLength - 7;
+    }
+    return pos;
+  };
 
-export default Leaderboards;
+  const StyledLeaderboardWrapper = styled.div<LeaderboardWrapperProps>`
+    transform: ${props.trimmed ? 'inherit' : `translateY(calc(-${posOffset()}*2.2rem))`};
+  `;
+
+  return (
+    <StyledLeaderboards {...props}>
+      <StyledLeaderboardWrapper>
+        {props.leaderboard.map((el, index) => {
+          const highlightedTeam = teamPosition === index;
+          console.log(highlightedTeam);
+          return (
+            <LeaderboardRow key={el.team} teamData={el} highlighted={highlightedTeam} />
+          );
+        })}
+      </StyledLeaderboardWrapper>
+    </StyledLeaderboards>
+  );
+};
+//TODO
+export default withErrorAndLoading(Leaderboards);

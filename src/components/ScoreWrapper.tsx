@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '../styles/styled';
 import ScoreNumber from './ScoreNumber';
+import withErrorAndLoading from '../hoc/withErrorAndLoading';
 
 import Text from './Text';
 
@@ -35,4 +36,4 @@ const ScoreWrapper: React.FC<ScoreWrapperProps> = props => {
   );
 };
 
-export default ScoreWrapper;
+export default withErrorAndLoading(ScoreWrapper);

@@ -2,7 +2,11 @@ import { combineReducers } from 'redux';
 import { createReducer } from 'typesafe-actions';
 import { LeaderboardItem } from 'MyTypes';
 
-import { fetchLeaderboardAsync, sendClickAsync, setSession } from '../actions/gameActions';
+import {
+  fetchLeaderboardAsync,
+  sendClickAsync,
+  setSession
+} from '../actions/gameActions';
 
 interface clicksCounterReducer {
   myClicks: number;
@@ -15,12 +19,19 @@ const gameReducer = combineReducers({
     .handleAction(
       [fetchLeaderboardAsync.success, fetchLeaderboardAsync.failure],
       (state, action) => {
-        console.log('changing loading');
         return false;
       }
     ),
 
-  error: createReducer('' as string),
+  error: createReducer(false as boolean)
+    .handleAction(
+      [fetchLeaderboardAsync.failure, sendClickAsync.failure],
+      (state, action) => true
+    )
+    .handleAction(
+      [fetchLeaderboardAsync.success, sendClickAsync.success],
+      (state, action) => false
+    ),
 
   sessionId: createReducer('' as string).handleAction(
     setSession,
@@ -28,36 +39,21 @@ const gameReducer = combineReducers({
   ),
 
   clicksCounter: createReducer({
-    myClicks: 1024,
-    teamClicks: 65535
+    myClicks: 0,
+    teamClicks: 0
   } as clicksCounterReducer).handleAction(sendClickAsync.success, (state, action) => {
-    console.log(action.payload);
     return {
       myClicks: action.payload.your_clicks,
       teamClicks: action.payload.team_clicks
     };
   }),
 
-  leaderboardData: createReducer([
-    {
-      order: 1,
-      team: 'Best_Team_Ever',
-      clicks: 339
-    },
-    {
-      order: 2,
-      team: 'test-name',
-      clicks: 1
-    },
-    {
-      order: 3,
-      team: 'tet645',
-      clicks: 1
+  leaderboardData: createReducer([] as LeaderboardItem[]).handleAction(
+    fetchLeaderboardAsync.success,
+    (state, action) => {
+      return action.payload;
     }
-  ] as LeaderboardItem[]).handleAction(fetchLeaderboardAsync.success, (state, action) => {
-    console.log(action);
-    return action.payload;
-  })
+  )
 });
 
 export default gameReducer;

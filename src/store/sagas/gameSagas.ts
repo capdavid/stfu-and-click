@@ -1,27 +1,27 @@
-import { put, call, takeEvery, all } from "redux-saga/effects";
-import { fetchLeaderboardAsync, sendClickAsync } from "../actions/gameActions";
-import { LeaderboardItem, ClickResponse } from "MyTypes";
-import axios from "../../axios";
+import { put, call, takeEvery, all } from 'redux-saga/effects';
+import { fetchLeaderboardAsync, sendClickAsync } from '../actions/gameActions';
+import { LeaderboardItem, ClickResponse } from 'MyTypes';
+import axios from '../../axios';
 // import { AxiosResponse } from "axios";
 
 export function* fetchLeaderboardSaga(
   action: ReturnType<typeof fetchLeaderboardAsync.request>
 ): Generator {
   try {
-    const response: any = yield call(axios.get, "/leaderboard");
-    //TODO fix response type
+    const response: any = yield call(axios.get, '/leaderboard');
     yield put(fetchLeaderboardAsync.success(response.data as LeaderboardItem[]));
   } catch (error) {
     yield put(fetchLeaderboardAsync.failure(error));
   }
 }
 
-export function* sendClickSaga(action: ReturnType<typeof sendClickAsync.request>): Generator {
+export function* sendClickSaga(
+  action: ReturnType<typeof sendClickAsync.request>
+): Generator {
   try {
-    console.log("sendClick");
     const { teamName, sessionId } = action.payload;
 
-    const response: any = yield call(axios.post, "/klik", {
+    const response: any = yield call(axios.post, '/klik', {
       team: teamName,
       session: sessionId
     });

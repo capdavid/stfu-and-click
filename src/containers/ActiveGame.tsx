@@ -11,6 +11,7 @@ import * as actions from '../store/actions/gameActions';
 import ClickButton from '../components/ClickButton';
 import GameWrapper from '../components/GameWrapper';
 import Heading from '../components/Heading';
+import Leaderboards from '../components/Leaderboards';
 import ScoreWrapper from '../components/ScoreWrapper';
 import Text from '../components/Text';
 import { Click } from 'MyTypes';
@@ -22,27 +23,36 @@ interface RouterParams {
 interface ActiveGameProps extends RouteComponentProps {}
 
 const ActiveGame: React.FC<ActiveGameProps> = props => {
-  useEffect(() => {
-    console.log('ActiveGame mounted');
-    const sessionId = uuidv4();
-    dispatch(actions.setSession(sessionId));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const counterStore = useSelector((state: RootState) => state.game.clicksCounter);
   const { myClicks, teamClicks } = counterStore;
   const sessionId = useSelector((state: RootState) => state.game.sessionId);
+  const leaderboardData = useSelector((state: RootState) => state.game.leaderboardData);
 
   const dispatch = useDispatch();
-  const onClickSend = (clickData: Click) => dispatch(actions.sendClickAsync.request(clickData));
+  const onClickSend = (clickData: Click) =>
+    dispatch(actions.sendClickAsync.request(clickData));
+  const onSetSession = () => dispatch(actions.setSession(uuidv4()));
+  const onFetchLeaderboard = () => dispatch(actions.fetchLeaderboardAsync.request());
 
   const teamName = useParams<RouterParams>().teamName;
 
+  const clickData = {
+    teamName,
+    sessionId
+  };
+
+  useEffect(() => {
+    onSetSession();
+    onFetchLeaderboard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    sessionId && onClickSend(clickData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionId]);
+
   const handleClick = () => {
-    const clickData = {
-      teamName,
-      sessionId
-    };
     onClickSend(clickData);
   };
 
@@ -62,6 +72,8 @@ const ActiveGame: React.FC<ActiveGameProps> = props => {
       <GameWrapper>
         <ClickButton large onClick={handleClick} />
         <ScoreWrapper personalScore={formattedMyClicks} teamScore={formattedTeamClicks} />
+        <Leaderboards leaderboard={leaderboardData} teamName={teamName} />
+        <Text withPadding>Want to be top? STFU and click!</Text>
       </GameWrapper>
     </Fragment>
   );

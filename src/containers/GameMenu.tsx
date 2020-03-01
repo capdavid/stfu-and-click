@@ -12,43 +12,42 @@ import TeamForm from '../components/TeamForm';
 import Text from '../components/Text';
 
 const GameMenu: React.FC<RouteComponentProps> = props => {
-    const dispatch = useDispatch();
-    const leaderboardData = useSelector((state: RootState) => {
-        return state.game.leaderboardData;
+  const dispatch = useDispatch();
+  const leaderboardData = useSelector((state: RootState) => state.game.leaderboardData);
+
+  const onFetchLeaderboard = () => dispatch(actions.fetchLeaderboardAsync.request());
+  const trimmedLeaderboardData = leaderboardData.slice(0, 10);
+  const teamNameInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    onFetchLeaderboard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  //TODO Add input validation (only letters, numbers, spaces, no longer than XX chars) + show error message
+
+  const handleGameStart = (e: React.FormEvent) => {
+    e.preventDefault();
+    props.history.push({
+      pathname: '/' + teamNameInputRef.current!.value
     });
+  };
 
-    const trimmedLeaderboardData = leaderboardData.slice(0, 10);
+  return (
+    <Fragment>
+      <Quote author="anonymous">
+        It's really simple, you just need to click as fast as you can.
+      </Quote>
 
-    const onFetchLeaderboard = () => dispatch(actions.fetchLeaderboardAsync.request());
-
-    useEffect(() => {
-        onFetchLeaderboard();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    //TODO Add input validation (only letters, numbers, spaces, no longer than XX chars) + show error message
-
-    const teamNameInputRef = useRef<HTMLInputElement>(null);
-
-    const handleGameStart = (e: React.FormEvent) => {
-        e.preventDefault();
-        props.history.push({
-            pathname: '/' + teamNameInputRef.current!.value
-        });
-    };
-
-    return (
-        <Fragment>
-            <Quote author="anonymous">It's really simple, you just need to click as fast as you can.</Quote>
-
-            <GameWrapper>
-                <TeamForm onGameStart={handleGameStart} teamNameRef={teamNameInputRef} />
-                <h2 style={{ textAlign: 'center', marginTop: '3rem' }}>TOP 10 CLICKERS</h2>
-                <Leaderboards leaderboard={trimmedLeaderboardData} />
-                <Text>Want to be top? STFU and click!</Text>
-            </GameWrapper>
-        </Fragment>
-    );
+      <GameWrapper>
+        <TeamForm onGameStart={handleGameStart} teamNameRef={teamNameInputRef} />
+        {/* //TODO */}
+        <h2 style={{ textAlign: 'center', marginTop: '3rem' }}>TOP 10 CLICKERS</h2>
+        <Leaderboards leaderboard={trimmedLeaderboardData} trimmed />
+        <Text withPadding>Want to be top? STFU and click!</Text>
+      </GameWrapper>
+    </Fragment>
+  );
 };
 
 export default GameMenu;
