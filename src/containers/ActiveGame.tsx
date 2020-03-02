@@ -1,8 +1,9 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'typesafe-actions';
+import { debounce } from 'lodash';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -22,7 +23,9 @@ interface RouterParams {
 
 interface ActiveGameProps extends RouteComponentProps {}
 
-const ActiveGame: React.FC<ActiveGameProps> = props => {
+let intervals: NodeJS.Timeout[] = [];
+
+const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
   const counterStore = useSelector((state: RootState) => state.game.clicksCounter);
   const { myClicks, teamClicks } = counterStore;
   const sessionId = useSelector((state: RootState) => state.game.sessionId);
@@ -35,6 +38,10 @@ const ActiveGame: React.FC<ActiveGameProps> = props => {
   const onFetchLeaderboard = () => dispatch(actions.fetchLeaderboardAsync.request());
 
   const teamName = useParams<RouterParams>().teamName;
+
+  const FETCH_INTERVAL_INACTIVE = 300000;
+  const FETCH_INTERVAL_ACTIVE = 900;
+  const INTERVAL_ACTIVE_CLEAR_DELAY = 1000;
 
   const clickData = {
     teamName,
@@ -52,8 +59,30 @@ const ActiveGame: React.FC<ActiveGameProps> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]);
 
+  useEffect(() => {
+    setInterval(() => onFetchLeaderboard(), FETCH_INTERVAL_INACTIVE);
+    //TODO
+    return console.log('unmounting');
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const debouncedClearInterval = useRef(
+    debounce(() => {
+      clearInterval(intervals[0]);
+      intervals = [];
+    }, INTERVAL_ACTIVE_CLEAR_DELAY)
+  ).current;
+
   const handleClick = () => {
+    let myInterval;
+    if (!intervals.length) {
+      myInterval = setInterval(() => onFetchLeaderboard(), FETCH_INTERVAL_ACTIVE);
+      intervals.push(myInterval);
+    }
     onClickSend(clickData);
+
+    debouncedClearInterval();
   };
 
   const makeNumPretty = (num: number): string => {
@@ -62,7 +91,6 @@ const ActiveGame: React.FC<ActiveGameProps> = props => {
 
   const formattedMyClicks = makeNumPretty(myClicks);
   const formattedTeamClicks = makeNumPretty(teamClicks);
-
   return (
     <Fragment>
       <Heading>
@@ -77,6 +105,6 @@ const ActiveGame: React.FC<ActiveGameProps> = props => {
       </GameWrapper>
     </Fragment>
   );
-};
+});
 
 export default ActiveGame;

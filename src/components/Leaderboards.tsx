@@ -8,6 +8,7 @@ import withErrorAndLoading from '../hoc/withErrorAndLoading';
 interface LeaderboardWrapperProps {
   teamName?: string;
   trimmed?: boolean;
+  positionOffset?: number;
 }
 
 interface LeaderboardsProps extends LeaderboardWrapperProps {
@@ -23,12 +24,18 @@ const StyledLeaderboards = styled.div<LeaderboardsProps>`
   margin: 0 auto;
   font-weight: bold;
 `;
+const StyledLeaderboardWrapper = styled.div<LeaderboardWrapperProps>`
+  transform: ${p =>
+    p.trimmed ? 'inherit' : `translateY(calc(-${p.positionOffset}*2.2rem))`};
+  transition: transform 0.5s ease-in;
+`;
 
-const Leaderboards: React.FC<LeaderboardsProps> = props => {
+const Leaderboards: React.FC<LeaderboardsProps> = React.memo(props => {
   const { leaderboard } = props;
-  console.log('Leaderboards rendering');
+  // console.log('Leaderboards rendering');
   console.log(leaderboard);
   const teamPosition = leaderboard.findIndex(el => el.team === props.teamName);
+
   const posOffset = () => {
     const leaderboardLength = leaderboard.length;
     let pos;
@@ -41,16 +48,11 @@ const Leaderboards: React.FC<LeaderboardsProps> = props => {
     return pos;
   };
 
-  const StyledLeaderboardWrapper = styled.div<LeaderboardWrapperProps>`
-    transform: ${props.trimmed ? 'inherit' : `translateY(calc(-${posOffset()}*2.2rem))`};
-  `;
-
   return (
     <StyledLeaderboards {...props}>
-      <StyledLeaderboardWrapper>
+      <StyledLeaderboardWrapper positionOffset={posOffset()} {...props}>
         {props.leaderboard.map((el, index) => {
           const highlightedTeam = teamPosition === index;
-          console.log(highlightedTeam);
           return (
             <LeaderboardRow key={el.team} teamData={el} highlighted={highlightedTeam} />
           );
@@ -58,6 +60,7 @@ const Leaderboards: React.FC<LeaderboardsProps> = props => {
       </StyledLeaderboardWrapper>
     </StyledLeaderboards>
   );
-};
+});
 //TODO
-export default withErrorAndLoading(Leaderboards);
+export default Leaderboards;
+// export default withErrorAndLoading(Leaderboards);

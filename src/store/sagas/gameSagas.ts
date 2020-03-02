@@ -9,6 +9,7 @@ export function* fetchLeaderboardSaga(
 ): Generator {
   try {
     const response: any = yield call(axios.get, '/leaderboard');
+    console.log('FETCHING LEADERBOARD');
     yield put(fetchLeaderboardAsync.success(response.data as LeaderboardItem[]));
   } catch (error) {
     yield put(fetchLeaderboardAsync.failure(error));
@@ -25,7 +26,7 @@ export function* sendClickSaga(
       team: teamName,
       session: sessionId
     });
-
+    // console.log('SENDING A CLICK');
     yield put(sendClickAsync.success(response.data as ClickResponse));
   } catch (error) {
     yield put(sendClickAsync.failure(error));

@@ -35,5 +35,7 @@ const ScoreWrapper: React.FC<ScoreWrapperProps> = props => {
     </StyledScoreWrapper>
   );
 };
+//TODO
 
-export default withErrorAndLoading(ScoreWrapper);
+// export default withErrorAndLoading(ScoreWrapper);
+export default ScoreWrapper;
