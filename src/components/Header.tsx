@@ -1,6 +1,8 @@
+import React from 'react';
 import styled from '../styles/styled';
+import { Link } from 'react-router-dom';
 
-const Header = styled.header`
+const StyledHeader = styled.header`
   margin: 0;
   width: 100%;
   padding: 0.5rem;
@@ -11,5 +13,22 @@ const Header = styled.header`
   background: ${p => p.theme.colors.primary};
   color: ${p => p.theme.colors.white};
 `;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  &:focus,
+  &:hover,
+  &:visited,
+  &:link,
+  &:active {
+    text-decoration: none;
+  }
+`;
+
+const Header: React.FC = props => (
+  <StyledLink to="/">
+    <StyledHeader>{props.children}</StyledHeader>
+  </StyledLink>
+);
 
 export default Header;
