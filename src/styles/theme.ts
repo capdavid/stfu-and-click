@@ -13,8 +13,14 @@ interface Colors {
   // primary: string;
 }
 
+interface Media {
+  tablet: number;
+  phone: number;
+}
+
 export interface Theme {
   colors: Colors;
+  media: Media;
 }
 
 export const colors = {
@@ -30,6 +36,12 @@ export const colors = {
   lightRed: '#ff6666'
 };
 
+export const media = {
+  tablet: 768,
+  phone: 420
+};
+
 export const theme: Theme = {
-  colors
+  colors,
+  media
 };

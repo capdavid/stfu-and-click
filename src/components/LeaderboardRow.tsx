@@ -22,11 +22,11 @@ const StyledLeaderboardRow = styled.div<LeaderboardRowProps>`
 `;
 
 const StyledOrderCell = styled.div`
-  flex: 1;
+  flex: 2;
   text-align: center;
 `;
 const StyledTeamCell = styled.div`
-  flex: 5;
+  flex: 8;
   text-align: left;
   overflow: hidden;
 `;
@@ -39,10 +39,12 @@ const StyledClicksCell = styled.div`
 const LeaderboardRow: React.FC<LeaderboardRowProps> = props => {
   const { order, team: teamName, clicks } = props.teamData;
 
+  const slicedTeamName = teamName.slice(0, 22);
+
   return (
     <StyledLeaderboardRow {...props}>
       <StyledOrderCell>{order}</StyledOrderCell>
-      <StyledTeamCell>{teamName.slice(0, 20)}</StyledTeamCell>
+      <StyledTeamCell>{slicedTeamName}</StyledTeamCell>
       <StyledClicksCell>{clicks}</StyledClicksCell>
     </StyledLeaderboardRow>
   );
