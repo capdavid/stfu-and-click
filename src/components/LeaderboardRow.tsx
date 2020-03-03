@@ -16,9 +16,9 @@ const StyledLeaderboardRow = styled.div<LeaderboardRowProps>`
       p.highlighted ? p.theme.colors.primary : p.theme.colors.lighterBlue};
   }
   color: ${p => (p.highlighted ? p.theme.colors.white : p.theme.colors.black)};
-  font-size: ${p => (p.highlighted ? '1.5rem' : '1rem')};
+  font-size: ${p => (p.highlighted ? '24px' : '16px')};
   line-height: 1;
-  padding: ${p => (p.highlighted ? '1rem 0' : '0.6rem 0')};
+  padding: ${p => (p.highlighted ? '16px 0' : '10px 0')};
 `;
 
 const StyledOrderCell = styled.div`

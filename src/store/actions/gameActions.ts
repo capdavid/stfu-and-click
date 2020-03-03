@@ -15,3 +15,4 @@ export const sendClickAsync = createAsyncAction(
 )<Click, ClickResponse, Error>();
 
 export const setSession = createAction('SET_SESSION')<string>();
+export const setInitialTeamScore = createAction('SET_INITIAL_TEAM_SCORE')<number>();

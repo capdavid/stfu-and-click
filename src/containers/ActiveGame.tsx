@@ -36,6 +36,8 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
   const onClickSend = (clickData: Click) =>
     dispatch(actions.sendClickAsync.request(clickData));
   const onSetSession = () => dispatch(actions.setSession(uuidv4()));
+  const onSetInitialTeamScore = (teamScore: number) =>
+    dispatch(actions.setInitialTeamScore(teamScore));
   const onFetchLeaderboard = () => dispatch(actions.fetchLeaderboardAsync.request());
 
   const teamName = useParams<RouterParams>().teamName;
@@ -56,16 +58,10 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
   }, []);
 
   useEffect(() => {
-    sessionId && onClickSend(clickData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionId]);
-
-  useEffect(() => {
     const inactiveFetchIntervalId = setInterval(
       () => onFetchLeaderboard(),
       FETCH_INTERVAL_INACTIVE
     );
-    //TODO
     return () => clearInterval(inactiveFetchIntervalId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -93,8 +89,16 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
     return num.toLocaleString('cs-CZ');
   };
 
+  const teamPositionIndex = leaderboardData.findIndex(el => el.team === teamName);
+  const initialTeamScore = leaderboardData[teamPositionIndex]?.clicks;
+
+  if (!teamClicks && initialTeamScore) {
+    onSetInitialTeamScore(initialTeamScore);
+  }
+
   const formattedMyClicks = makeNumPretty(myClicks);
   const formattedTeamClicks = makeNumPretty(teamClicks);
+
   return (
     <Fragment>
       <Heading>
@@ -103,8 +107,11 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
       <Text>Too lazy to click? Let your pals click for you:</Text>
       <GameWrapper>
         <ClickButton large onClick={handleClick} />
-        <ScoreWrapper personalScore={formattedMyClicks} teamScore={formattedTeamClicks} />
-        <Leaderboards leaderboard={leaderboardData} teamName={teamName} />
+        <ScoreWrapper myScore={formattedMyClicks} teamScore={formattedTeamClicks} />
+        <Leaderboards
+          leaderboard={leaderboardData}
+          teamPositionIndex={teamPositionIndex}
+        />
         <Text withPadding>Want to be top? STFU and click!</Text>
       </GameWrapper>
     </Fragment>

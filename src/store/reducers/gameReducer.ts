@@ -5,7 +5,8 @@ import { LeaderboardItem } from 'MyTypes';
 import {
   fetchLeaderboardAsync,
   sendClickAsync,
-  setSession
+  setSession,
+  setInitialTeamScore
 } from '../actions/gameActions';
 
 interface clicksCounterReducer {
@@ -41,12 +42,17 @@ const gameReducer = combineReducers({
   clicksCounter: createReducer({
     myClicks: 0,
     teamClicks: 0
-  } as clicksCounterReducer).handleAction(sendClickAsync.success, (state, action) => {
-    return {
-      myClicks: action.payload.your_clicks,
-      teamClicks: action.payload.team_clicks
-    };
-  }),
+  } as clicksCounterReducer)
+    .handleAction(sendClickAsync.success, (state, action) => {
+      return {
+        myClicks: action.payload.your_clicks,
+        teamClicks: action.payload.team_clicks
+      };
+    })
+    .handleAction(setInitialTeamScore, (state, action) => ({
+      ...state,
+      teamClicks: action.payload
+    })),
 
   leaderboardData: createReducer([] as LeaderboardItem[]).handleAction(
     fetchLeaderboardAsync.success,

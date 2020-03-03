@@ -5,7 +5,7 @@ import ScoreNumber from './ScoreNumber';
 import Text from './Text';
 
 interface ScoreWrapperProps {
-  personalScore: string;
+  myScore: string;
   teamScore: string;
 }
 
@@ -25,7 +25,7 @@ const ScoreWrapper: React.FC<ScoreWrapperProps> = props => {
     <StyledScoreWrapper>
       <StyledScoreDiv>
         <Text>Your Clicks:</Text>
-        <ScoreNumber>{props.personalScore}</ScoreNumber>
+        <ScoreNumber>{props.myScore}</ScoreNumber>
       </StyledScoreDiv>
       <StyledScoreDiv>
         <Text>Team Clicks:</Text>
