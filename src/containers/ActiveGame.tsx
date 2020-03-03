@@ -7,15 +7,16 @@ import { debounce } from 'lodash';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import * as actions from '../store/actions/gameActions';
+import { Click } from 'MyTypes';
 
+import * as actions from '../store/actions/gameActions';
 import ClickButton from '../components/ClickButton';
 import GameWrapper from '../components/GameWrapper';
 import Heading from '../components/Heading';
 import Leaderboards from '../components/Leaderboards';
 import ScoreWrapper from '../components/ScoreWrapper';
 import Text from '../components/Text';
-import { Click } from 'MyTypes';
+import withError from '../hoc/withError';
 
 interface RouterParams {
   teamName: string;
@@ -23,7 +24,7 @@ interface RouterParams {
 
 interface ActiveGameProps extends RouteComponentProps {}
 
-let intervals: NodeJS.Timeout[] = [];
+let activeFetchIntervalId: NodeJS.Timeout | null;
 
 const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
   const counterStore = useSelector((state: RootState) => state.game.clicksCounter);
@@ -60,25 +61,28 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
   }, [sessionId]);
 
   useEffect(() => {
-    setInterval(() => onFetchLeaderboard(), FETCH_INTERVAL_INACTIVE);
+    const inactiveFetchIntervalId = setInterval(
+      () => onFetchLeaderboard(),
+      FETCH_INTERVAL_INACTIVE
+    );
     //TODO
-    return console.log('unmounting');
-
+    return () => clearInterval(inactiveFetchIntervalId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const debouncedClearInterval = useRef(
     debounce(() => {
-      clearInterval(intervals[0]);
-      intervals = [];
+      clearInterval(activeFetchIntervalId!);
+      activeFetchIntervalId = null;
     }, INTERVAL_ACTIVE_CLEAR_DELAY)
   ).current;
 
   const handleClick = () => {
-    let myInterval;
-    if (!intervals.length) {
-      myInterval = setInterval(() => onFetchLeaderboard(), FETCH_INTERVAL_ACTIVE);
-      intervals.push(myInterval);
+    if (!activeFetchIntervalId) {
+      activeFetchIntervalId = setInterval(
+        () => onFetchLeaderboard(),
+        FETCH_INTERVAL_ACTIVE
+      );
     }
     onClickSend(clickData);
 
@@ -107,4 +111,4 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
   );
 });
 
-export default ActiveGame;
+export default withError(ActiveGame);

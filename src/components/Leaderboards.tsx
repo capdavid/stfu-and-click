@@ -3,7 +3,6 @@ import styled from '../styles/styled';
 
 import { LeaderboardItem } from 'MyTypes';
 import LeaderboardRow from './LeaderboardRow';
-import withErrorAndLoading from '../hoc/withErrorAndLoading';
 
 interface LeaderboardWrapperProps {
   teamName?: string;
@@ -61,6 +60,4 @@ const Leaderboards: React.FC<LeaderboardsProps> = React.memo(props => {
     </StyledLeaderboards>
   );
 });
-//TODO
 export default Leaderboards;
-// export default withErrorAndLoading(Leaderboards);

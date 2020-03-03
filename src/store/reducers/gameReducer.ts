@@ -30,7 +30,7 @@ const gameReducer = combineReducers({
     )
     .handleAction(
       [fetchLeaderboardAsync.success, sendClickAsync.success],
-      (state, action) => false
+      (state, action) => (state === false ? false : true)
     ),
 
   sessionId: createReducer('' as string).handleAction(

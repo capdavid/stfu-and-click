@@ -10,6 +10,7 @@ import Leaderboards from '../components/Leaderboards';
 import Quote from '../components/Quote';
 import TeamForm from '../components/TeamForm';
 import Text from '../components/Text';
+import withError from '../hoc/withError';
 
 const GameMenu: React.FC<RouteComponentProps> = props => {
   const dispatch = useDispatch();
@@ -50,4 +51,4 @@ const GameMenu: React.FC<RouteComponentProps> = props => {
   );
 };
 
-export default GameMenu;
+export default withError(GameMenu);

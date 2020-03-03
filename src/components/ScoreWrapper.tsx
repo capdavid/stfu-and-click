@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from '../styles/styled';
 import ScoreNumber from './ScoreNumber';
-import withErrorAndLoading from '../hoc/withErrorAndLoading';
 
 import Text from './Text';
 
@@ -35,7 +34,5 @@ const ScoreWrapper: React.FC<ScoreWrapperProps> = props => {
     </StyledScoreWrapper>
   );
 };
-//TODO
 
-// export default withErrorAndLoading(ScoreWrapper);
 export default ScoreWrapper;
