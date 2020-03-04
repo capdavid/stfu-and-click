@@ -13,13 +13,23 @@ interface LeaderboardWrapperProps {
 
 interface LeaderboardsProps extends LeaderboardWrapperProps {
   leaderboard: LeaderboardItem[];
+  teamIndex?: number;
 }
+const heightBasedOnProps = (props: LeaderboardsProps) => {
+  if (props.trimmed) {
+    return 'inherit';
+  } else if (props.teamPositionIndex === -1) {
+    return '252px';
+  } else {
+    return '272px';
+  }
+};
 
 const StyledLeaderboards = styled.div<LeaderboardsProps>`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: ${p => (p.trimmed ? 'inherit' : '272px')};
+  height: ${heightBasedOnProps};
   overflow: hidden;
   margin: 0 auto;
   font-weight: bold;
@@ -33,9 +43,6 @@ const StyledLeaderboardWrapper = styled.div<LeaderboardWrapperProps>`
 
 const Leaderboards: React.FC<LeaderboardsProps> = React.memo(props => {
   const { leaderboard, teamPositionIndex } = props;
-  // console.log('Leaderboards rendering');
-  console.log(leaderboard);
-  console.log(teamPositionIndex);
 
   const posOffset = () => {
     const leaderboardLength = leaderboard.length;
@@ -54,7 +61,6 @@ const Leaderboards: React.FC<LeaderboardsProps> = React.memo(props => {
       <StyledLeaderboardWrapper positionOffset={posOffset()} {...props}>
         {props.leaderboard.map((el, index) => {
           const highlightedTeam = teamPositionIndex === index;
-          console.log(highlightedTeam);
           return (
             <LeaderboardRow key={el.team} teamData={el} highlighted={highlightedTeam} />
           );

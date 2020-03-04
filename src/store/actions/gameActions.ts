@@ -16,3 +16,4 @@ export const sendClickAsync = createAsyncAction(
 
 export const setSession = createAction('SET_SESSION')<string>();
 export const setInitialTeamScore = createAction('SET_INITIAL_TEAM_SCORE')<number>();
+export const resetScore = createAction('RESET_SCORE')();

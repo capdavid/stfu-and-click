@@ -6,7 +6,8 @@ import {
   fetchLeaderboardAsync,
   sendClickAsync,
   setSession,
-  setInitialTeamScore
+  setInitialTeamScore,
+  resetScore
 } from '../actions/gameActions';
 
 interface clicksCounterReducer {
@@ -15,13 +16,11 @@ interface clicksCounterReducer {
 }
 
 const gameReducer = combineReducers({
-  isLoading: createReducer(false as boolean)
-    .handleAction(fetchLeaderboardAsync.request, (state, action) => true)
+  isLoading: createReducer(true as boolean)
+    // .handleAction(fetchLeaderboardAsync.request, (state, action) => true)
     .handleAction(
       [fetchLeaderboardAsync.success, fetchLeaderboardAsync.failure],
-      (state, action) => {
-        return false;
-      }
+      (state, action) => false
     ),
 
   error: createReducer(false as boolean)
@@ -49,6 +48,10 @@ const gameReducer = combineReducers({
         teamClicks: action.payload.team_clicks
       };
     })
+    .handleAction(resetScore, (state, action) => ({
+      myClicks: 0,
+      teamClicks: 0
+    }))
     .handleAction(setInitialTeamScore, (state, action) => ({
       ...state,
       teamClicks: action.payload

@@ -17,6 +17,7 @@ const GameMenu: React.FC<RouteComponentProps> = props => {
   const leaderboardData = useSelector((state: RootState) => state.game.leaderboardData);
 
   const onFetchLeaderboard = () => dispatch(actions.fetchLeaderboardAsync.request());
+  const onResetScore = () => dispatch(actions.resetScore());
   const trimmedLeaderboardData = leaderboardData.slice(0, 10);
   const teamNameInputRef = useRef<HTMLInputElement>(null);
 
@@ -29,6 +30,7 @@ const GameMenu: React.FC<RouteComponentProps> = props => {
 
   const handleGameStart = (e: React.FormEvent) => {
     e.preventDefault();
+    onResetScore();
     props.history.push({
       pathname: '/' + teamNameInputRef.current!.value
     });

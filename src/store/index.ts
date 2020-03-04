@@ -11,6 +11,7 @@ const sagaMiddleware = createSagaMiddleware();
 const enhancer = composeWithDevTools(applyMiddleware(sagaMiddleware));
 
 const initialState = {};
+
 const store = createStore(rootReducer, initialState, enhancer);
 
 export default store;

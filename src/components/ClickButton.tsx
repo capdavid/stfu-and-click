@@ -17,7 +17,7 @@ const StyledButton = styled.button<ClickButtonProps>`
   font-weight: bold;
   font-size: 2rem;
   margin: ${p => (p.large ? '1rem auto' : '0')};
-  padding: ${p => (p.large ? '2rem' : '0')};
+  padding: ${p => (p.large ? '3rem' : '0')};
   text-align: center;
   line-height: 0;
   outline: none;
