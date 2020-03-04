@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from '../styles/styled';
 
-interface TeamNotFoundProps extends RouteComponentProps<{}, any, { teamName?: string }> {}
+interface TeamNotFoundProps extends RouteComponentProps<{}, {}, { teamName?: string }> {}
 
 const StyledTeamNotFound = styled.div<TeamNotFoundProps>`
   font-size: 2rem;
@@ -21,7 +21,7 @@ const TeamNotFound: React.FC<TeamNotFoundProps> = props => {
         props.history.push({
           pathname: '/'
         }),
-      3000
+      3500
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -30,7 +30,7 @@ const TeamNotFound: React.FC<TeamNotFoundProps> = props => {
   return (
     <StyledTeamNotFound {...props}>
       <div>
-        Team <strong> {teamName} </strong> not found, do you want to create a new team?
+        Team <strong> {teamName} </strong> not found, but good news you can create one!
         <br />
         <br />
         Redirecting to home page...
