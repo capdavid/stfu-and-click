@@ -1,6 +1,5 @@
 import { createAction, createAsyncAction } from 'typesafe-actions';
 import { LeaderboardItem, Click, ClickResponse } from 'MyTypes';
-// import { AxiosResponse } from "axios";
 
 export const fetchLeaderboardAsync = createAsyncAction(
   'FETCH_LEADERBOARD_REQUEST',

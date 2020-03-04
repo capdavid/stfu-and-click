@@ -4,7 +4,6 @@ import createSagaMiddleware from 'redux-saga';
 
 import { watchGame } from './sagas/gameSagas';
 import rootReducer from './reducers/root-reducer';
-// import { composeEnhancers } from './utils';
 
 const sagaMiddleware = createSagaMiddleware();
 

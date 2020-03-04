@@ -9,8 +9,6 @@ interface Colors {
   lighterBlue: string;
   darkBlue: string;
   lightRed: string;
-  // lightBlue: string;
-  // primary: string;
 }
 
 interface Media {

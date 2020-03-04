@@ -16,12 +16,10 @@ interface clicksCounterReducer {
 }
 
 const gameReducer = combineReducers({
-  isLoading: createReducer(true as boolean)
-    // .handleAction(fetchLeaderboardAsync.request, (state, action) => true)
-    .handleAction(
-      [fetchLeaderboardAsync.success, fetchLeaderboardAsync.failure],
-      (state, action) => false
-    ),
+  isLoading: createReducer(true as boolean).handleAction(
+    [fetchLeaderboardAsync.success, fetchLeaderboardAsync.failure],
+    (state, action) => false
+  ),
 
   error: createReducer(false as boolean)
     .handleAction(

@@ -26,8 +26,6 @@ const GameMenu: React.FC<RouteComponentProps> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //TODO Add input validation (only letters, numbers, spaces, no longer than XX chars) + show error message
-
   const handleGameStart = (e: React.FormEvent) => {
     e.preventDefault();
     onResetScore();
@@ -44,7 +42,7 @@ const GameMenu: React.FC<RouteComponentProps> = props => {
 
       <GameWrapper>
         <TeamForm onGameStart={handleGameStart} teamNameRef={teamNameInputRef} />
-        {/* //TODO */}
+
         <h2 style={{ textAlign: 'center', marginTop: '3rem' }}>TOP 10 CLICKERS</h2>
         <Leaderboards leaderboard={trimmedLeaderboardData} trimmed />
         <Text withPadding>Want to be top? STFU and click!</Text>

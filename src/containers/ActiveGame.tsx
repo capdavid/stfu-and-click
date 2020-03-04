@@ -102,7 +102,7 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
   if (!teamClicks && initialTeamScore) {
     onSetInitialTeamScore(initialTeamScore);
   }
-  //@ts-ignore
+
   if (
     teamPositionIndex === -1 &&
     props.history.action !== 'PUSH' &&
