@@ -14,7 +14,7 @@ You will also see any lint errors in the console.
 
 ### `yarn test`
 
-Test incoming soon!
+Tests incoming soon!
 
 ### `yarn build`
 
