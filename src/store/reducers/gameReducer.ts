@@ -16,11 +16,6 @@ interface clicksCounterReducer {
 }
 
 const gameReducer = combineReducers({
-  isLoading: createReducer(true as boolean).handleAction(
-    [fetchLeaderboardAsync.success, fetchLeaderboardAsync.failure],
-    (state, action) => false
-  ),
-
   error: createReducer(false as boolean)
     .handleAction(
       [fetchLeaderboardAsync.failure, sendClickAsync.failure],
@@ -31,21 +26,18 @@ const gameReducer = combineReducers({
       (state, action) => (state === false ? false : true)
     ),
 
-  sessionId: createReducer('' as string).handleAction(
-    setSession,
-    (state, action) => action.payload
-  ),
+  sessionId: createReducer('' as string)
+    .handleAction(setSession, (state, action) => action.payload)
+    .handleAction(resetScore, (state, action) => ''),
 
   clicksCounter: createReducer({
     myClicks: 0,
     teamClicks: 0
   } as clicksCounterReducer)
-    .handleAction(sendClickAsync.success, (state, action) => {
-      return {
-        myClicks: action.payload.your_clicks,
-        teamClicks: action.payload.team_clicks
-      };
-    })
+    .handleAction(sendClickAsync.success, (state, action) => ({
+      myClicks: action.payload.your_clicks,
+      teamClicks: action.payload.team_clicks
+    }))
     .handleAction(resetScore, (state, action) => ({
       myClicks: 0,
       teamClicks: 0
@@ -55,12 +47,9 @@ const gameReducer = combineReducers({
       teamClicks: action.payload
     })),
 
-  leaderboardData: createReducer([] as LeaderboardItem[]).handleAction(
-    fetchLeaderboardAsync.success,
-    (state, action) => {
-      return action.payload;
-    }
-  )
+  leaderboardData: createReducer([] as LeaderboardItem[])
+    .handleAction(fetchLeaderboardAsync.success, (state, action) => action.payload)
+    .handleAction(resetScore, (state, action) => [])
 });
 
 export default gameReducer;

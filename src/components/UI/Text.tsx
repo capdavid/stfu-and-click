@@ -1,4 +1,4 @@
-import styled from '../styles/styled';
+import styled from '../../styles/styled';
 
 interface TextProps {
   left?: boolean;

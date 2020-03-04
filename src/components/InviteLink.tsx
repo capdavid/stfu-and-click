@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import copy from 'copy-to-clipboard';
 import styled from '../styles/styled';
 
-import Text from './Text';
+import Text from './UI/Text';
 
 const StyledInviteLink = styled.div`
   text-align: center;

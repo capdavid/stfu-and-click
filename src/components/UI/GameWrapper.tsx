@@ -1,4 +1,4 @@
-import styled from '../styles/styled';
+import styled from '../../styles/styled';
 
 const GameWrapper = styled.div`
   margin: 2rem auto;

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '../styles/styled';
 import ScoreNumber from './ScoreNumber';
 
-import Text from './Text';
+import Text from './UI/Text';
 
 interface ScoreWrapperProps {
   myScore: string;

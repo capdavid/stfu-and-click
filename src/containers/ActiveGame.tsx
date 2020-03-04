@@ -10,12 +10,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { Click } from 'MyTypes';
 
 import * as actions from '../store/actions/gameActions';
-import ClickButton from '../components/ClickButton';
-import GameWrapper from '../components/GameWrapper';
-import Heading from '../components/Heading';
+import ClickButton from '../components/UI/ClickButton';
+import GameWrapper from '../components/UI/GameWrapper';
+import Heading from '../components/UI/Heading';
 import Leaderboards from '../components/Leaderboards';
 import ScoreWrapper from '../components/ScoreWrapper';
-import Text from '../components/Text';
+import Text from '../components/UI/Text';
 import withError from '../hoc/withError';
 import InviteLink from '../components/InviteLink';
 
@@ -43,14 +43,14 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
 
   const teamName = useParams<RouterParams>().teamName;
 
-  const FETCH_INTERVAL_INACTIVE = 300000;
-  const FETCH_INTERVAL_ACTIVE = 900;
-  const INTERVAL_ACTIVE_CLEAR_DELAY = 1000;
-
   const clickData = {
     teamName,
     sessionId
   };
+
+  const FETCH_INTERVAL_INACTIVE = 300000;
+  const FETCH_INTERVAL_ACTIVE = 900;
+  const INTERVAL_ACTIVE_CLEAR_DELAY = 1000;
 
   useEffect(() => {
     onSetSession();
@@ -59,11 +59,9 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
-      props.history.action === 'PUSH' && sessionId && handleClick();
-    }, 0);
+    props.history.action === 'PUSH' && sessionId && handleClick();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [sessionId]);
 
   useEffect(() => {
     const inactiveFetchIntervalId = setInterval(
@@ -96,6 +94,9 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
     return num.toLocaleString('cs-CZ');
   };
 
+  const formattedMyClicks = makeNumPretty(myClicks);
+  const formattedTeamClicks = makeNumPretty(teamClicks);
+
   const teamPositionIndex = leaderboardData.findIndex(el => el.team === teamName);
   const initialTeamScore = leaderboardData[teamPositionIndex]?.clicks;
 
@@ -118,9 +119,6 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
     );
   }
 
-  const formattedMyClicks = makeNumPretty(myClicks);
-  const formattedTeamClicks = makeNumPretty(teamClicks);
-
   return (
     <Fragment>
       <Heading>
@@ -130,7 +128,6 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
       <GameWrapper>
         <ClickButton large onClick={handleClick} />
         <ScoreWrapper myScore={formattedMyClicks} teamScore={formattedTeamClicks} />
-
         <Leaderboards
           leaderboard={leaderboardData}
           teamPositionIndex={teamPositionIndex}

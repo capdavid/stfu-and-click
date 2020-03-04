@@ -5,9 +5,9 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { theme } from './styles/theme';
 
 import ActiveGame from './containers/ActiveGame';
-import Footer from './components/Footer';
+import Footer from './components/UI/Footer';
 import GameMenu from './containers/GameMenu';
-import Header from './components/Header';
+import Header from './components/UI/Header';
 import TeamNotFound from './components/TeamNotFound';
 
 const App: React.FC = () => {

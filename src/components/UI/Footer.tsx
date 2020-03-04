@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styled from '../styles/styled';
+import styled from '../../styles/styled';
 import Text from './Text';
 
 const Footer: React.FC = () => {
@@ -14,7 +14,8 @@ const Footer: React.FC = () => {
   return (
     <StyledFooter>
       <Text>
-        If you don't like this page, it's <a href="https://applifting.io">Applifting's</a> fault.
+        If you don't like this page, it's <a href="https://applifting.io">Applifting's</a>{' '}
+        fault.
       </Text>
     </StyledFooter>
   );

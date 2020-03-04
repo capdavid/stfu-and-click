@@ -2,8 +2,8 @@ import React from 'react';
 import styled from '../styles/styled';
 import { media } from '../styles/theme';
 
-import Text from './Text';
-import ClickButton from './ClickButton';
+import Text from './UI/Text';
+import ClickButton from './UI/ClickButton';
 
 interface TeamFormProps {
   onGameStart: (e: React.FormEvent) => void;

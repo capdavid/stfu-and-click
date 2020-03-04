@@ -1,7 +1,7 @@
 import React from 'react';
 
-import styled from '../styles/styled';
-import { media } from '../styles/theme';
+import styled from '../../styles/styled';
+import { media } from '../../styles/theme';
 
 interface ClickButtonProps extends React.ButtonHTMLAttributes<HTMLElement> {
   large?: boolean;

@@ -5,11 +5,11 @@ import { RootState } from 'typesafe-actions';
 
 import * as actions from '../store/actions/gameActions';
 
-import GameWrapper from '../components/GameWrapper';
+import GameWrapper from '../components/UI/GameWrapper';
 import Leaderboards from '../components/Leaderboards';
-import Quote from '../components/Quote';
+import Quote from '../components/UI/Quote';
 import TeamForm from '../components/TeamForm';
-import Text from '../components/Text';
+import Text from '../components/UI/Text';
 import withError from '../hoc/withError';
 
 const GameMenu: React.FC<RouteComponentProps> = props => {
