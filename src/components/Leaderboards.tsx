@@ -13,7 +13,6 @@ interface LeaderboardWrapperProps {
 
 interface LeaderboardsProps extends LeaderboardWrapperProps {
   leaderboard: LeaderboardItem[];
-  teamIndex?: number;
 }
 const heightBasedOnProps = (props: LeaderboardsProps) => {
   if (props.trimmed) {
