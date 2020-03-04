@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'typesafe-actions';
 import { debounce } from 'lodash';
-
+import { Redirect } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Click } from 'MyTypes';
@@ -17,6 +17,7 @@ import Leaderboards from '../components/Leaderboards';
 import ScoreWrapper from '../components/ScoreWrapper';
 import Text from '../components/Text';
 import withError from '../hoc/withError';
+import InviteLink from '../components/InviteLink';
 
 interface RouterParams {
   teamName: string;
@@ -58,6 +59,13 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
   }, []);
 
   useEffect(() => {
+    setTimeout(() => {
+      props.history.action === 'PUSH' && sessionId && handleClick();
+    }, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     const inactiveFetchIntervalId = setInterval(
       () => onFetchLeaderboard(),
       FETCH_INTERVAL_INACTIVE
@@ -81,7 +89,6 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
       );
     }
     onClickSend(clickData);
-
     debouncedClearInterval();
   };
 
@@ -95,6 +102,21 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
   if (!teamClicks && initialTeamScore) {
     onSetInitialTeamScore(initialTeamScore);
   }
+  //@ts-ignore
+  if (
+    teamPositionIndex === -1 &&
+    props.history.action !== 'PUSH' &&
+    leaderboardData.length
+  ) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/team-not-found',
+          state: { teamName: teamName }
+        }}
+      />
+    );
+  }
 
   const formattedMyClicks = makeNumPretty(myClicks);
   const formattedTeamClicks = makeNumPretty(teamClicks);
@@ -104,10 +126,11 @@ const ActiveGame: React.FC<ActiveGameProps> = React.memo(props => {
       <Heading>
         Clicking for team <strong>{teamName}</strong>
       </Heading>
-      <Text>Too lazy to click? Let your pals click for you:</Text>
+      <InviteLink />
       <GameWrapper>
         <ClickButton large onClick={handleClick} />
         <ScoreWrapper myScore={formattedMyClicks} teamScore={formattedTeamClicks} />
+
         <Leaderboards
           leaderboard={leaderboardData}
           teamPositionIndex={teamPositionIndex}
