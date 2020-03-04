@@ -4,7 +4,6 @@ interface TextProps {
   left?: boolean;
   withPadding?: boolean;
   inline?: boolean;
-  green?: boolean;
 }
 
 const Text = styled.p<TextProps>`
@@ -13,7 +12,6 @@ const Text = styled.p<TextProps>`
   text-align: ${props => (props.left ? 'left' : 'center')};
   margin: 0 auto;
   font-style: italic;
-  color: ${props => (props.green ? 'green' : 'inherit')};
 `;
 
 export default Text;
