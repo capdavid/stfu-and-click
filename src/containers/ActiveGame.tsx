@@ -13,7 +13,7 @@ import * as actions from '../store/actions/gameActions';
 import ClickButton from '../components/UI/ClickButton';
 import GameWrapper from '../components/UI/GameWrapper';
 import Heading from '../components/UI/Heading';
-import Leaderboards from '../components/Leaderboards';
+import Leaderboards from '../components/Leaderboard/Leaderboards';
 import ScoreWrapper from '../components/ScoreWrapper';
 import Text from '../components/UI/Text';
 import withError from '../hoc/withError';

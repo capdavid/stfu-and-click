@@ -1,8 +1,9 @@
-import React from 'react';
-import styled from '../styles/styled';
+import React, { Fragment } from 'react';
+import styled from '../../styles/styled';
 
 import { LeaderboardItem } from 'MyTypes';
 import LeaderboardRow from './LeaderboardRow';
+import LeaderboardHeading from './LeaderboardHeading';
 
 interface LeaderboardWrapperProps {
   teamName?: string;
@@ -56,16 +57,19 @@ const Leaderboards: React.FC<LeaderboardsProps> = React.memo(props => {
   };
 
   return (
-    <StyledLeaderboards {...props}>
-      <StyledLeaderboardWrapper positionOffset={posOffset()} {...props}>
-        {props.leaderboard.map((el, index) => {
-          const highlightedTeam = teamPositionIndex === index;
-          return (
-            <LeaderboardRow key={el.team} teamData={el} highlighted={highlightedTeam} />
-          );
-        })}
-      </StyledLeaderboardWrapper>
-    </StyledLeaderboards>
+    <Fragment>
+      <LeaderboardHeading />
+      <StyledLeaderboards {...props}>
+        <StyledLeaderboardWrapper positionOffset={posOffset()} {...props}>
+          {props.leaderboard.map((el, index) => {
+            const highlightedTeam = teamPositionIndex === index;
+            return (
+              <LeaderboardRow key={el.team} teamData={el} highlighted={highlightedTeam} />
+            );
+          })}
+        </StyledLeaderboardWrapper>
+      </StyledLeaderboards>
+    </Fragment>
   );
 });
 export default Leaderboards;

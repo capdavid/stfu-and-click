@@ -1,6 +1,10 @@
-import styled from '../styles/styled';
+import styled from '../../styles/styled';
 import React from 'react';
 import { LeaderboardItem } from 'MyTypes';
+
+import LeaderboardOrderCell from './LeaderboardOrderCell';
+import LeaderboardTeamCell from './LeaderboardTeamCell';
+import LeaderboardClicksCell from './LeaderboardClicksCell';
 
 interface LeaderboardRowProps {
   teamData: LeaderboardItem;
@@ -21,21 +25,6 @@ const StyledLeaderboardRow = styled.div<LeaderboardRowProps>`
   padding: ${p => (p.highlighted ? '16px 0' : '10px 0')};
 `;
 
-const StyledOrderCell = styled.div`
-  flex: 2;
-  text-align: center;
-`;
-const StyledTeamCell = styled.div`
-  flex: 8;
-  text-align: left;
-  overflow: hidden;
-`;
-const StyledClicksCell = styled.div`
-  flex: 2;
-  text-align: right;
-  margin: 0 1rem 0 0;
-`;
-
 const LeaderboardRow: React.FC<LeaderboardRowProps> = props => {
   const { order, team: teamName, clicks } = props.teamData;
 
@@ -43,9 +32,9 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = props => {
 
   return (
     <StyledLeaderboardRow {...props}>
-      <StyledOrderCell>{order}</StyledOrderCell>
-      <StyledTeamCell>{slicedTeamName}</StyledTeamCell>
-      <StyledClicksCell>{clicks}</StyledClicksCell>
+      <LeaderboardOrderCell>{order}</LeaderboardOrderCell>
+      <LeaderboardTeamCell>{slicedTeamName}</LeaderboardTeamCell>
+      <LeaderboardClicksCell>{clicks}</LeaderboardClicksCell>
     </StyledLeaderboardRow>
   );
 };

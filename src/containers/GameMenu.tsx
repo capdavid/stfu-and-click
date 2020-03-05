@@ -6,8 +6,9 @@ import { RootState } from 'typesafe-actions';
 import * as actions from '../store/actions/gameActions';
 
 import GameWrapper from '../components/UI/GameWrapper';
-import Leaderboards from '../components/Leaderboards';
+import Leaderboards from '../components/Leaderboard/Leaderboards';
 import Quote from '../components/UI/Quote';
+import Ribbon from '../components/UI/Ribbon';
 import TeamForm from '../components/TeamForm';
 import Text from '../components/UI/Text';
 import withError from '../hoc/withError';
@@ -42,8 +43,7 @@ const GameMenu: React.FC<RouteComponentProps> = props => {
 
       <GameWrapper>
         <TeamForm onGameStart={handleGameStart} teamNameRef={teamNameInputRef} />
-
-        <h2 style={{ textAlign: 'center', marginTop: '3rem' }}>TOP 10 CLICKERS</h2>
+        <Ribbon>TOP 10 Clickers</Ribbon>
         <Leaderboards leaderboard={trimmedLeaderboardData} trimmed />
         <Text withPadding>Want to be top? STFU and click!</Text>
       </GameWrapper>
