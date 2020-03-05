@@ -10,7 +10,9 @@
 
 # production
 /build
-_redirects
+
+#netlify config
+_redirects 
 
 # misc
 .DS_Store
