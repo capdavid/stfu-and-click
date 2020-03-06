@@ -29,10 +29,13 @@ const GameMenu: React.FC<RouteComponentProps> = props => {
 
   const handleGameStart = (e: React.FormEvent) => {
     e.preventDefault();
-    onResetScore();
-    props.history.push({
-      pathname: '/' + teamNameInputRef.current!.value
-    });
+    if (teamNameInputRef.current!.value) {
+      onResetScore();
+      props.history.push({
+        pathname: '/' + teamNameInputRef.current!.value
+      });
+    }
+    return;
   };
 
   return (
