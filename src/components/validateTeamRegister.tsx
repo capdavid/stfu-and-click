@@ -1,5 +1,4 @@
 export default function validate(value: string) {
-  console.log(value);
   let error = '';
   if (!value) {
     error = 'Please enter a team name.';
