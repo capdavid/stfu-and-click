@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useEffect } from 'react';
+import React, { Fragment, useRef, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'typesafe-actions';
@@ -11,6 +11,7 @@ import Quote from '../components/UI/Quote';
 import Ribbon from '../components/UI/Ribbon';
 import TeamForm from '../components/TeamForm';
 import Text from '../components/UI/Text';
+import validateTeamRegister from '../components/validateTeamRegister';
 import withError from '../hoc/withError';
 
 const GameMenu: React.FC<RouteComponentProps> = props => {
@@ -27,9 +28,13 @@ const GameMenu: React.FC<RouteComponentProps> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const [validationError, setValidationError] = useState('');
+
   const handleGameStart = (e: React.FormEvent) => {
     e.preventDefault();
-    if (teamNameInputRef.current!.value === '') return;
+    const validationError = validateTeamRegister(teamNameInputRef.current!.value);
+    setValidationError(validationError);
+    if (validationError) return;
     onResetScore();
     props.history.push({
       pathname: '/' + teamNameInputRef.current!.value
@@ -43,7 +48,11 @@ const GameMenu: React.FC<RouteComponentProps> = props => {
       </Quote>
 
       <GameWrapper>
-        <TeamForm onGameStart={handleGameStart} teamNameRef={teamNameInputRef} />
+        <TeamForm
+          onGameStart={handleGameStart}
+          teamNameRef={teamNameInputRef}
+          validationError={validationError}
+        />
         <Ribbon>TOP 10 Clickers</Ribbon>
         <Leaderboards leaderboard={trimmedLeaderboardData} trimmed />
         <Text withPadding>Want to be top? STFU and click!</Text>

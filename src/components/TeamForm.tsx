@@ -8,6 +8,7 @@ import ClickButton from './UI/ClickButton';
 interface TeamFormProps {
   onGameStart: (e: React.FormEvent) => void;
   teamNameRef: React.MutableRefObject<HTMLInputElement | null>;
+  validationError: string;
 }
 
 const StyledTeamForm = styled.form`
@@ -45,7 +46,7 @@ const StyledInput = styled.input`
 
 const TeamForm: React.FC<TeamFormProps> = props => {
   return (
-    <StyledTeamForm onSubmit={e => props.onGameStart(e)}>
+    <StyledTeamForm onSubmit={props.onGameStart}>
       <StyledFormDiv>
         <label htmlFor="teamName">
           <Text left>Enter your team name: </Text>
@@ -56,6 +57,11 @@ const TeamForm: React.FC<TeamFormProps> = props => {
           name="teamName"
           ref={props.teamNameRef}
         />
+        {props.validationError && (
+          <Text left error>
+            {props.validationError}
+          </Text>
+        )}
       </StyledFormDiv>
       <ClickButton type="submit" />
     </StyledTeamForm>
